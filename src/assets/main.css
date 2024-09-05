@@ -43,6 +43,7 @@ body {
           display: flex;
           flex-flow: column nowrap;
           align-items: center;
+          border: 1px black solid;
 
           h1 {
             text-align: center;
@@ -61,7 +62,7 @@ body {
 
             li {
               display: flex;
-              gap:5px;
+              gap: 5px;
               list-style: none;
 
               input[type="radio"] {
@@ -73,13 +74,58 @@ body {
               }
             }
           }
-
-          border: 1px black solid;
         }
 
         .resultSection {
-          background-color: red;
           border: 1px black solid;
+          padding: 0 10px;
+
+          h1 {
+            text-align: center;
+            font-size: 50px;
+          }
+
+          table {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            border-collapse: collapse;
+
+            tr {
+              height: auto;
+
+              td,
+              th {
+                border: 1px black solid;
+                text-align: center;
+              }
+              .number {
+                font-size: 30px;
+              }
+              .word {
+                font-size: 20px;
+              }
+              .result {
+                font-size: 40px;
+              }
+              .correctAnswer {
+                width: 50%;
+              }
+            }
+
+            .scoreSection {
+              height: 56px;
+              .scoreHead {
+                text-align: right;
+                font-size: 30px;
+                padding-right: 10px;
+              }
+
+              .score {
+                font-size: 30px;
+              }
+            }
+          }
         }
       }
     }
