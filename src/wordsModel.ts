@@ -1,4 +1,5 @@
 const words: string[] = ["school", "block", "ice", "people"];
+const apiKey = "f478540c-c173-4512-b3fd-df91f342a25a";
 
 type DictionaryWord = {
   word: string;
@@ -13,6 +14,17 @@ type Problem = {
   answer: string;
   isUserCorrect: boolean;
 };
+
+type WordData = [
+  {
+    meta: {
+      id: string;
+    };
+    hom: number;
+    fl: string;
+    shortDef: string[];
+  },
+];
 
 let problems: Problem[] = [];
 
@@ -61,4 +73,25 @@ function resetProblems(problems: Problem[]): Problem[] {
       isUserCorrect: false,
     };
   });
+}
+
+async function fetchWords() {
+  let promises: Promise<WordData>[] = [];
+
+  promises = words.map(async (word) => {
+    const promise = await fetch(
+      `https://www.dictionaryapi.com/api/v3/references/sd2/json/${word}?key=${apiKey}`,
+    );
+    const data = await promise.json();
+
+    return data
+  });
+
+  Promise.all(promises).then((words) => {
+    console.log(words);
+  });
+}
+
+function setUpProblems(wordData:WordData[]){
+
 }
