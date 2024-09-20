@@ -1,13 +1,6 @@
 const words: string[] = ["school", "block", "ice", "people"];
 const apiKey = "f478540c-c173-4512-b3fd-df91f342a25a";
 
-type DictionaryWord = {
-  word: string;
-  definition: string;
-};
-
-const dictionaryWords: DictionaryWord[] = [];
-
 type Problem = {
   word: string;
   possibleAnswers: string[];
@@ -28,31 +21,19 @@ type WordData = [
 
 let problems: Problem[] = [];
 
-function setDictionaryWords(word: DictionaryWord) {
-  dictionaryWords.push(word);
-}
-
-function createDictionaryWord(data: any[], word: string): DictionaryWord {
-  let firstWord = data[0];
-
-  let definition: string = firstWord.shortdef[0];
-
-  return { word: word, definition };
-}
-
-function createProblems(words: DictionaryWord[]): Problem[] {
+function createProblems(words: WordData[], dictionaryWords:string[]): Problem[] {
   const possibleAnswers = [
-    words[0].definition,
-    words[1].definition,
-    words[2].definition,
-    words[3].definition,
+    words[0][0].shortDef[0],
+    words[1][0].shortDef[0],
+    words[2][0].shortDef[0],
+    words[3][0].shortDef[0],
   ];
 
-  const problems: Problem[] = words.map((word) => {
+  const problems: Problem[] = words.map((word, index) => {
     return {
-      word: word.word,
+      word: dictionaryWords[index],
       possibleAnswers,
-      answer: word.definition,
+      answer: word[0].shortDef[0],
       isUserCorrect: false,
     };
   });
@@ -95,3 +76,9 @@ async function fetchWords() {
 function setUpProblems(wordData:WordData[]){
 
 }
+
+const model = {
+  fetchWords, resetProblems
+}
+
+export default model

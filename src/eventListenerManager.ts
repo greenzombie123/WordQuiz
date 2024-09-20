@@ -1,4 +1,4 @@
-export type Listener = () => void;
+type Listener = () => void;
 
 const eventListenerManager = (() => {
   let pairs: Map<Listener, HTMLElement> = new Map();
