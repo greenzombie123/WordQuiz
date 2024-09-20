@@ -24,13 +24,56 @@ type WordDataArray = WordData[];
 
 let problems: Problem[] = [];
 
+let mockWordDataArrayList: WordDataArray[] = [
+  [
+    {
+      meta: {
+        id: "r",
+      },
+      hom: 1,
+      fl: "r",
+      shortdef: ["1"],
+    },
+  ],
+  [
+    {
+      meta: {
+        id: "r",
+      },
+      hom: 1,
+      fl: "r",
+      shortdef: ["2"],
+    },
+  ],
+  [
+    {
+      meta: {
+        id: "r",
+      },
+      hom: 1,
+      fl: "r",
+      shortdef: ["3"],
+    },
+  ],
+  [
+    {
+      meta: {
+        id: "r",
+      },
+      hom: 1,
+      fl: "r",
+      shortdef: ["4"],
+    },
+  ],
+];
+
 function createProblems(
   words: WordDataArray[],
   dictionaryWords: string[],
 ): Problem[] {
-  console.log(words[0])
+  console.log(words[0]);
 
-  const possibleAnswers:string[] = [
+  const possibleAnswers: string[] = [
     words[0][0].shortdef[0],
     words[1][0].shortdef[0],
     words[2][0].shortdef[0],
@@ -67,18 +110,24 @@ function resetProblems(problems: Problem[]): Problem[] {
 async function fetchWords() {
   let promises: Promise<WordDataArray>[] = [];
 
-  promises = words.map(async (word) => {
-    const promise = await fetch(
-      `https://www.dictionaryapi.com/api/v3/references/sd2/json/${word}?key=${apiKey}`,
-    );
-    const data:WordDataArray = await promise.json();
+  // promises = words.map(async (word, index) => {
+  //   const promise = await fetch(
+  //     `https://www.dictionaryapi.com/api/v3/references/sd2/json/${word}?key=${apiKey}`,
+  //   );
+  //   const data:WordDataArray = await promise.json();
 
-    return data;
-  });
+  //   return data;
+
+  // });
+
+  promises = mockWordDataArrayList.map(async (w:WordDataArray)=>{
+    return w
+  })
 
   Promise.all(promises).then((wordDataArrayList: WordDataArray[]) => {
     const problems = createProblems(wordDataArrayList, words);
     setProblems(problems);
+    console.log(problems)
     eventEmitter.emitEvent("problemsCreated");
   });
 }
