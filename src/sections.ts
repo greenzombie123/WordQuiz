@@ -1,3 +1,5 @@
+import eventEmitter from "./eventEmitter";
+
 const sections = (() => {
   let currentX: number = 0;
   const lastSlide = 4;
@@ -27,6 +29,9 @@ const sections = (() => {
       currentX -= slideWidth;
       changeSlideIndex(1);
       changeSlide()
+      if(currentSlide !== firstSlide){
+        eventEmitter.emitEvent('movedFrom1stSlide')
+      }
     }
   };
 
@@ -35,16 +40,19 @@ const sections = (() => {
       currentX += slideWidth;
       changeSlideIndex(-1);
       changeSlide()
+      if(currentSlide === firstSlide){
+        eventEmitter.emitEvent('movedTo1stSlide')
+      }
     }
   };
 
   const moveToFirstSlide = ()=> {
-    currentX += slideWidth;
+    currentX -= slideWidth;
       changeSlide()
   }
 
   const moveToResultSection = ()=>{
-      currentX += slideWidth;
+      currentX -= slideWidth;
       changeSlide()
   }
 

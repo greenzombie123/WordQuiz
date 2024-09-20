@@ -13,7 +13,9 @@ const arrowButtons = (() => {
     nextButton.style.visibility = "hidden";
   };
 
-  return {previousButton, nextButton, revealNextButton, revealPreviousButton, hideButtons}
+  const hidePreviousButton = ()=> (previousButton.style.visibility = "hidden");
+
+  return {previousButton, nextButton, revealNextButton, revealPreviousButton, hideButtons, hidePreviousButton}
 })()
 
 export default arrowButtons
