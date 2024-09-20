@@ -1,10 +1,9 @@
 import eventEmitter from "./eventEmitter";
-import { Word } from "./websterAPI";
 
-const words: string[] = ["school", "block", "ice", "people"];
+const words: string[] = ["student", "block", "ice", "people"];
 const apiKey = "f478540c-c173-4512-b3fd-df91f342a25a";
 
-type Problem = {
+export type Problem = {
   word: string;
   possibleAnswers: string[];
   answer: string;
@@ -73,6 +72,7 @@ function createProblems(
 ): Problem[] {
   console.log(words[0]);
 
+  //TODO Create function that randomizes the possible answers
   const possibleAnswers: string[] = [
     words[0][0].shortdef[0],
     words[1][0].shortdef[0],
@@ -127,8 +127,7 @@ async function fetchWords() {
   Promise.all(promises).then((wordDataArrayList: WordDataArray[]) => {
     const problems = createProblems(wordDataArrayList, words);
     setProblems(problems);
-    console.log(problems)
-    eventEmitter.emitEvent("problemsCreated");
+    eventEmitter.emitEvent("problemsCreated", problems);
   });
 }
 

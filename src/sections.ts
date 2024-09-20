@@ -22,7 +22,7 @@ const sections = (() => {
   };
 
   const moveRight = () => {
-    if (currentSlide === lastSlide) {
+    if (currentSlide !== lastSlide) {
       currentX -= slideWidth;
       changeSlideIndex(1);
       changeSlide()
@@ -30,7 +30,7 @@ const sections = (() => {
   };
 
   const moveLeft = () => {
-    if (currentSlide === firstSlide) {
+    if (currentSlide !== firstSlide) {
       currentX += slideWidth;
       changeSlideIndex(-1);
       changeSlide()

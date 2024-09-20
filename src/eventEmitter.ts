@@ -1,4 +1,4 @@
-type Listener = () => void;
+type Listener = (...arg:any) => void;
 type EventName = string;
 
 const eventEmitter = (() => {
@@ -8,13 +8,14 @@ const eventEmitter = (() => {
     manager.set(eventName, listener);
   };
 
-  const emitEvent = (eventName: EventName) => {
+  const emitEvent = (eventName: EventName, arg?: unknown) => {
     const listener = manager.get(eventName);
 
-    if (listener) listener();
+    if (listener && arg)listener(arg);
+    else if (listener && !arg) listener()
   };
 
-  return {subscribe, emitEvent}
+  return { subscribe, emitEvent };
 })();
 
 export default eventEmitter;
