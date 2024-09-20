@@ -110,6 +110,7 @@ function resetProblems(problems: Problem[]): Problem[] {
 async function fetchWords() {
   let promises: Promise<WordDataArray>[] = [];
 
+  //! DO NOT DELETE. Commented out to use mock promises array
   // promises = words.map(async (word, index) => {
   //   const promise = await fetch(
   //     `https://www.dictionaryapi.com/api/v3/references/sd2/json/${word}?key=${apiKey}`,
@@ -120,9 +121,9 @@ async function fetchWords() {
 
   // });
 
-  promises = mockWordDataArrayList.map(async (w:WordDataArray)=>{
-    return w
-  })
+  promises = mockWordDataArrayList.map(async (w: WordDataArray) => {
+    return w;
+  });
 
   Promise.all(promises).then((wordDataArrayList: WordDataArray[]) => {
     const problems = createProblems(wordDataArrayList, words);

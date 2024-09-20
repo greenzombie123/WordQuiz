@@ -138,6 +138,7 @@ body {
       border-bottom: 40px solid transparent;
       background-color: transparent;
       place-self: center;
+      visibility: hidden;
     }
 
     .previousButton {

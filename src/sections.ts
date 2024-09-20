@@ -1,6 +1,6 @@
 const sections = (() => {
   let currentX: number = 0;
-  const lastSlide = 5;
+  const lastSlide = 4;
   const firstSlide = 1;
   let currentSlide = 1;
 
@@ -22,7 +22,8 @@ const sections = (() => {
   };
 
   const moveRight = () => {
-    if (currentSlide !== lastSlide) {
+    if (currentSlide === lastSlide) moveToResultSection()
+    else if (currentSlide !== lastSlide) {
       currentX -= slideWidth;
       changeSlideIndex(1);
       changeSlide()
@@ -37,7 +38,17 @@ const sections = (() => {
     }
   };
 
-  return { sectionContainer, sections, moveLeft, moveRight };
+  const moveToFirstSlide = ()=> {
+    currentX += slideWidth;
+      changeSlide()
+  }
+
+  const moveToResultSection = ()=>{
+      currentX += slideWidth;
+      changeSlide()
+  }
+
+  return { sectionContainer, sections, moveLeft, moveRight, moveToFirstSlide };
 })();
 
 export default sections;
