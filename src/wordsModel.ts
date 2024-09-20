@@ -1,3 +1,6 @@
+import eventEmitter from "./eventEmitter";
+import { Word } from "./websterAPI";
+
 const words: string[] = ["school", "block", "ice", "people"];
 const apiKey = "f478540c-c173-4512-b3fd-df91f342a25a";
 
@@ -8,32 +11,37 @@ type Problem = {
   isUserCorrect: boolean;
 };
 
-type WordData = [
-  {
-    meta: {
-      id: string;
-    };
-    hom: number;
-    fl: string;
-    shortDef: string[];
-  },
-];
+type WordData = {
+  meta: {
+    id: string;
+  };
+  hom: number;
+  fl: string;
+  shortdef: string[];
+};
+
+type WordDataArray = WordData[];
 
 let problems: Problem[] = [];
 
-function createProblems(words: WordData[], dictionaryWords:string[]): Problem[] {
-  const possibleAnswers = [
-    words[0][0].shortDef[0],
-    words[1][0].shortDef[0],
-    words[2][0].shortDef[0],
-    words[3][0].shortDef[0],
+function createProblems(
+  words: WordDataArray[],
+  dictionaryWords: string[],
+): Problem[] {
+  console.log(words[0])
+
+  const possibleAnswers:string[] = [
+    words[0][0].shortdef[0],
+    words[1][0].shortdef[0],
+    words[2][0].shortdef[0],
+    words[3][0].shortdef[0],
   ];
 
   const problems: Problem[] = words.map((word, index) => {
     return {
       word: dictionaryWords[index],
       possibleAnswers,
-      answer: word[0].shortDef[0],
+      answer: word[0].shortdef[0],
       isUserCorrect: false,
     };
   });
@@ -57,28 +65,27 @@ function resetProblems(problems: Problem[]): Problem[] {
 }
 
 async function fetchWords() {
-  let promises: Promise<WordData>[] = [];
+  let promises: Promise<WordDataArray>[] = [];
 
   promises = words.map(async (word) => {
     const promise = await fetch(
       `https://www.dictionaryapi.com/api/v3/references/sd2/json/${word}?key=${apiKey}`,
     );
-    const data = await promise.json();
+    const data:WordDataArray = await promise.json();
 
-    return data
+    return data;
   });
 
-  Promise.all(promises).then((words) => {
-    console.log(words);
+  Promise.all(promises).then((wordDataArrayList: WordDataArray[]) => {
+    const problems = createProblems(wordDataArrayList, words);
+    setProblems(problems);
+    eventEmitter.emitEvent("problemsCreated");
   });
-}
-
-function setUpProblems(wordData:WordData[]){
-
 }
 
 const model = {
-  fetchWords, resetProblems
-}
+  fetchWords,
+  resetProblems,
+};
 
-export default model
+export default model;
