@@ -1,4 +1,5 @@
 import eventEmitter from "./eventEmitter";
+import { ProblemData } from "./warningBox";
 import { Problem } from "./wordsModel";
 
 const problemSections = (() => {
@@ -14,6 +15,17 @@ const problemSections = (() => {
 
   const areAllButtonsClicked = ():boolean=>{
     return firstRadioButtons.every(firstRadioButton=>!firstRadioButton.validity.valueMissing)
+  }
+
+  const getUnfinishedProblems = ():ProblemData[]=>{
+    const problemData:ProblemData[] = firstRadioButtons.map((firstRadioButton, index)=>{
+      return {
+        question:index+1,
+        isFinished:!firstRadioButton.validity.valueMissing
+      }
+    })
+
+    return problemData
   }
 
   const setUpQuiz = (problems: Problem[]) => {
@@ -38,7 +50,7 @@ const problemSections = (() => {
     console.log(problemSections);
   };
 
-  return { problemSections, setUpQuiz, areAllButtonsClicked };
+  return { problemSections, setUpQuiz, areAllButtonsClicked, getUnfinishedProblems };
 })();
 
 export default problemSections;

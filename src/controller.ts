@@ -6,6 +6,7 @@ import sections from "./sections";
 import eventEmitter from "./eventEmitter";
 import quizState from "./quizState";
 import arrowButtons from "./arrowButtons";
+import warningBox from "./warningBox";
 
 const controller = (() => {
   const handleButtonClick = () => {
@@ -26,8 +27,15 @@ const controller = (() => {
     if (currentSlide !== 4) {
       sections.moveRight();
       currentSlide = sections.getCurrentSlide();
-      if (currentSlide === 2) arrowButtons.revealPreviousButton()
+      if (currentSlide === 2) arrowButtons.revealPreviousButton();
       if (currentSlide === 4) arrowButtons.changeToFinishButton();
+    } else if (currentSlide === 4) {
+      const isQuizFinished = problemSections.areAllButtonsClicked();
+      if (isQuizFinished) console.log(123);
+      else {
+        const problemData = problemSections.getUnfinishedProblems();
+        warningBox.warnUser(problemData);
+      }
     }
   };
 
@@ -36,7 +44,7 @@ const controller = (() => {
     if (currentSlide !== 1) {
       sections.moveLeft();
       currentSlide = sections.getCurrentSlide();
-      if(currentSlide === 1) arrowButtons.hidePreviousButton()
+      if (currentSlide === 1) arrowButtons.hidePreviousButton();
       if (
         currentSlide !== 4 &&
         arrowButtons.nextButton.classList.contains("finishButton")

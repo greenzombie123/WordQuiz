@@ -173,6 +173,10 @@ body {
     .warningBox {
       display: none;
       grid-area: bottom;
+      text-align: center;
+      font-size: 20px;
+      color: red;
+      margin-top: 10px;
     }
   }
 

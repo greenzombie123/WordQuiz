@@ -24,17 +24,10 @@ const sections = (() => {
   };
 
   const moveRight = () => {
-    if (currentSlide === lastSlide) moveToResultSection()
-    else if (currentSlide !== lastSlide) {
+    if (currentSlide !== lastSlide) {
       currentX -= slideWidth;
       changeSlideIndex(1);
-      changeSlide()
-      if(currentSlide !== firstSlide){
-        eventEmitter.emitEvent('movedFrom1stSlide')
-      }
-      if(currentSlide === lastSlide){
-        eventEmitter.emitEvent('movedToLastSlide')
-      }
+      changeSlide();
     }
   };
 
@@ -42,26 +35,31 @@ const sections = (() => {
     if (currentSlide !== firstSlide) {
       currentX += slideWidth;
       changeSlideIndex(-1);
-      changeSlide()
-      if(currentSlide === firstSlide){
-        eventEmitter.emitEvent('movedTo1stSlide')
-      }
+      changeSlide();
     }
   };
 
-  const moveToFirstSlide = ()=> {
+  const moveToFirstSlide = () => {
     currentX -= slideWidth;
-      changeSlide()
-  }
+    changeSlide();
+  };
 
-  const moveToResultSection = ()=>{
-      currentX -= slideWidth;
-      changeSlide()
-  }
+  const moveToResultSection = () => {
+    currentX -= slideWidth;
+    changeSlide();
+  };
 
-  const getCurrentSlide = ()=> currentSlide
+  const getCurrentSlide = () => currentSlide;
 
-  return { sectionContainer, sections, moveLeft, moveRight, moveToFirstSlide, getCurrentSlide };
+  return {
+    sectionContainer,
+    sections,
+    moveLeft,
+    moveRight,
+    moveToFirstSlide,
+    getCurrentSlide,
+    moveToResultSection,
+  };
 })();
 
 export default sections;
