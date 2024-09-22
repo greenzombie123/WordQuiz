@@ -139,6 +139,7 @@ body {
       background-color: transparent;
       place-self: center;
       visibility: hidden;
+      cursor: pointer;
     }
 
     .previousButton {
@@ -151,6 +152,15 @@ body {
       grid-area: right;
       border-left: 40px solid yellow;
       border-right: none;
+
+      &.finishButton {
+        border: 2px solid white;
+        width: 100px;
+        height: 50px;
+        border-radius: 15px;
+        background-color: red;
+        font-size: 25px;
+      }
     }
 
     .mainButton {
@@ -158,6 +168,11 @@ body {
       padding: 5px;
       font-size: 40px;
       place-self: center;
+    }
+
+    .warningBox {
+      display: none;
+      grid-area: bottom;
     }
   }
 

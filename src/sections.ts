@@ -32,6 +32,9 @@ const sections = (() => {
       if(currentSlide !== firstSlide){
         eventEmitter.emitEvent('movedFrom1stSlide')
       }
+      if(currentSlide === lastSlide){
+        eventEmitter.emitEvent('movedToLastSlide')
+      }
     }
   };
 
@@ -56,7 +59,9 @@ const sections = (() => {
       changeSlide()
   }
 
-  return { sectionContainer, sections, moveLeft, moveRight, moveToFirstSlide };
+  const getCurrentSlide = ()=> currentSlide
+
+  return { sectionContainer, sections, moveLeft, moveRight, moveToFirstSlide, getCurrentSlide };
 })();
 
 export default sections;

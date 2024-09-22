@@ -2,9 +2,19 @@ import eventEmitter from "./eventEmitter";
 import { Problem } from "./wordsModel";
 
 const problemSections = (() => {
+  
   let problemSections: HTMLDivElement[] = Array.from(
     document.querySelectorAll(".problemSection"),
   );
+
+  const firstRadioButtons: HTMLInputElement[] = problemSections.map(
+    (problemSection) =>
+      problemSection.querySelector("input") as HTMLInputElement,
+  );
+
+  const areAllButtonsClicked = ():boolean=>{
+    return firstRadioButtons.every(firstRadioButton=>!firstRadioButton.validity.valueMissing)
+  }
 
   const setUpQuiz = (problems: Problem[]) => {
     problemSections.forEach((problemSection, index) => {
@@ -28,7 +38,7 @@ const problemSections = (() => {
     console.log(problemSections);
   };
 
-  return { problemSections, setUpQuiz };
+  return { problemSections, setUpQuiz, areAllButtonsClicked };
 })();
 
 export default problemSections;

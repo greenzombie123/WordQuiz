@@ -18,21 +18,44 @@ const controller = (() => {
   const handleSetUpFinished = () => {
     sections.moveToFirstSlide();
     arrowButtons.revealNextButton();
+    mainButton.hideButton();
+  };
+
+  const handleNextButtonClick = () => {
+    let currentSlide = sections.getCurrentSlide();
+    if (currentSlide !== 4) {
+      sections.moveRight();
+      currentSlide = sections.getCurrentSlide();
+      if (currentSlide === 2) arrowButtons.revealPreviousButton()
+      if (currentSlide === 4) arrowButtons.changeToFinishButton();
+    }
+  };
+
+  const handlePreviousButtonClick = () => {
+    let currentSlide = sections.getCurrentSlide();
+    if (currentSlide !== 1) {
+      sections.moveLeft();
+      currentSlide = sections.getCurrentSlide();
+      if(currentSlide === 1) arrowButtons.hidePreviousButton()
+      if (
+        currentSlide !== 4 &&
+        arrowButtons.nextButton.classList.contains("finishButton")
+      )
+        arrowButtons.changeToNextButton();
+    }
   };
 
   const init = () => {
     eventEmitter.subscribe("problemsCreated", problemSections.setUpQuiz);
     eventEmitter.subscribe("setUpFinished", handleSetUpFinished);
-    eventEmitter.subscribe("movedFrom1stSlide", arrowButtons.revealPreviousButton)
-    eventEmitter.subscribe('movedTo1stSlide', arrowButtons.hidePreviousButton)
 
     eventListenerManager.setListener(handleButtonClick, mainButton.button);
     eventListenerManager.setListener(
-      sections.moveLeft,
+      handlePreviousButtonClick,
       arrowButtons.previousButton,
     );
     eventListenerManager.setListener(
-      sections.moveRight,
+      handleNextButtonClick,
       arrowButtons.nextButton,
     );
   };

@@ -13,9 +13,26 @@ const arrowButtons = (() => {
     nextButton.style.visibility = "hidden";
   };
 
-  const hidePreviousButton = ()=> (previousButton.style.visibility = "hidden");
+  const hidePreviousButton = () => (previousButton.style.visibility = "hidden");
+  const changeToFinishButton = () => {
+    nextButton.classList.add("finishButton");
+    nextButton.textContent = "Finish";
+  };
+  const changeToNextButton = () => {
+    nextButton.classList.remove("finishButton");
+    nextButton.textContent = ""
+  };
 
-  return {previousButton, nextButton, revealNextButton, revealPreviousButton, hideButtons, hidePreviousButton}
-})()
+  return {
+    previousButton,
+    nextButton,
+    revealNextButton,
+    revealPreviousButton,
+    hideButtons,
+    hidePreviousButton,
+    changeToFinishButton,
+    changeToNextButton,
+  };
+})();
 
-export default arrowButtons
+export default arrowButtons;
