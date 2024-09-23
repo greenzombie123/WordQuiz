@@ -4,7 +4,9 @@ const sections = (() => {
   let currentX: number = 0;
   const lastSlide = 4;
   const firstSlide = 1;
-  let currentSlide = 1;
+  const resultsSlide = 5;
+  const startSlide = 0;
+  let currentSlide = 0;
 
   const sectionContainer = document.querySelector(
     ".sectionContainer",
@@ -15,8 +17,10 @@ const sections = (() => {
     -2,
   );
 
-  const changeSlideIndex = (index: -1 | 1) => {
-    currentSlide += index;
+  const changeSlideIndex = (index: -1 | 1 | "reset") => {
+    if (index === "reset") {
+      currentSlide = 1;
+    } else currentSlide += index;
   };
 
   const changeSlide = () => {
@@ -42,10 +46,18 @@ const sections = (() => {
   const moveToFirstSlide = () => {
     currentX -= slideWidth;
     changeSlide();
+    changeSlideIndex(1);
   };
 
   const moveToResultSection = () => {
     currentX -= slideWidth;
+    changeSlide();
+    changeSlideIndex(1);
+  };
+
+  const moveBackToFirstSlide = () => {
+    currentX = -slideWidth;
+    changeSlideIndex("reset");
     changeSlide();
   };
 
@@ -59,6 +71,7 @@ const sections = (() => {
     moveToFirstSlide,
     getCurrentSlide,
     moveToResultSection,
+    moveBackToFirstSlide,
   };
 })();
 

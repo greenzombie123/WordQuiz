@@ -1,4 +1,5 @@
 import eventEmitter from "./eventEmitter";
+import { ProblemData } from "./warningBox";
 
 const words: string[] = ["student", "block", "ice", "people"];
 const apiKey = "f478540c-c173-4512-b3fd-df91f342a25a";
@@ -31,7 +32,7 @@ let mockWordDataArrayList: WordDataArray[] = [
       },
       hom: 1,
       fl: "r",
-      shortdef: ["1"],
+      shortdef: ["sjiojsdfjsa sddf a fa daslfj j oifj ofw1"],
     },
   ],
   [
@@ -51,7 +52,7 @@ let mockWordDataArrayList: WordDataArray[] = [
       },
       hom: 1,
       fl: "r",
-      shortdef: ["3"],
+      shortdef: ["3e eife f wf iwie ffwifw w fewifw fwifw l"],
     },
   ],
   [
@@ -96,8 +97,8 @@ function setProblems(newProblems: Problem[]) {
   problems = [...newProblems];
 }
 
-function resetProblems(problems: Problem[]): Problem[] {
-  return problems.map((problem) => {
+function resetProblems(){
+  const resetProblems = problems.map((problem) => {
     return {
       word: problem.word,
       possibleAnswers: problem.possibleAnswers,
@@ -105,6 +106,49 @@ function resetProblems(problems: Problem[]): Problem[] {
       isUserCorrect: false,
     };
   });
+
+  setProblems(resetProblems)
+}
+
+function randomizeProblems(){
+  let currentProblems:Problem[] = [...problems]
+  const newProblems:Problem[] = []
+  for (let index = 0; index < 4; index++) {
+      const ranNum = Math.floor(Math.random() * currentProblems.length)
+      const newProblem:Problem = currentProblems[ranNum]
+      newProblem.possibleAnswers = randomizePossibleAnswers(newProblem.possibleAnswers)
+      newProblems.push(newProblem)
+      currentProblems = currentProblems.filter(p=>p.word !== newProblem?.word)
+  }
+  setProblems(newProblems)
+}
+
+function randomizePossibleAnswers(answers:string[]):string[]{
+  let currentAnswers:string[] = [...answers]
+  const newAnswers:string[] = []
+  for (let index = 0; index < 4; index++) {
+    const ranNum = Math.floor(Math.random() * currentAnswers.length)
+    newAnswers.push(currentAnswers[ranNum])
+    currentAnswers = currentAnswers.filter(a=>a !== currentAnswers[ranNum])
+  }
+  return newAnswers
+}
+
+function updateProblems(problemData: ProblemData[]) {
+  const updatedProblems:Problem[] = problems.map((problem, index) => {
+    return {
+      word: problem.word,
+      possibleAnswers: problem.possibleAnswers,
+      answer: problem.answer,
+      isUserCorrect: problemData[index].chosenAnswer === problem.answer,
+    };
+  });
+
+  setProblems(updatedProblems)
+}
+
+function getProblems(){
+  return problems
 }
 
 async function fetchWords() {
@@ -135,6 +179,9 @@ async function fetchWords() {
 const model = {
   fetchWords,
   resetProblems,
+  updateProblems,
+  getProblems,
+  randomizeProblems
 };
 
 export default model;

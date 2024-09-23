@@ -3,7 +3,6 @@ import { ProblemData } from "./warningBox";
 import { Problem } from "./wordsModel";
 
 const problemSections = (() => {
-  
   let problemSections: HTMLDivElement[] = Array.from(
     document.querySelectorAll(".problemSection"),
   );
@@ -13,20 +12,33 @@ const problemSections = (() => {
       problemSection.querySelector("input") as HTMLInputElement,
   );
 
-  const areAllButtonsClicked = ():boolean=>{
-    return firstRadioButtons.every(firstRadioButton=>!firstRadioButton.validity.valueMissing)
-  }
+  const areAllButtonsClicked = (): boolean => {
+    return firstRadioButtons.every(
+      (firstRadioButton) => !firstRadioButton.validity.valueMissing,
+    );
+  };
 
-  const getUnfinishedProblems = ():ProblemData[]=>{
-    const problemData:ProblemData[] = firstRadioButtons.map((firstRadioButton, index)=>{
-      return {
-        question:index+1,
-        isFinished:!firstRadioButton.validity.valueMissing
-      }
-    })
+  const getProblems = (): ProblemData[] => {
+    const problemData: ProblemData[] = firstRadioButtons.map(
+      (firstRadioButton, index) => {
+        const answer = getChosenAnswer(problemSections[index]);
+        return {
+          question: index + 1,
+          isFinished: !firstRadioButton.validity.valueMissing,
+          ...(answer ? { chosenAnswer: answer.value } : {}),
+        };
+      },
+    );
 
-    return problemData
-  }
+    return problemData;
+  };
+
+  const getChosenAnswer = (
+    problemSection: HTMLElement,
+  ): HTMLInputElement | undefined => {
+    const answers = Array.from(problemSection.querySelectorAll("input"));
+    return answers.find((answer) => answer.checked);
+  };
 
   const setUpQuiz = (problems: Problem[]) => {
     problemSections.forEach((problemSection, index) => {
@@ -39,18 +51,19 @@ const problemSections = (() => {
       ) as HTMLLabelElement[];
 
       heading.textContent = problems[index].word;
-      inputs.forEach(
-        (input, i) => (input.value = problems[index].possibleAnswers[i]),
-      );
+      inputs.forEach((input, i) => {
+        //TODO Accidentally removes checked from html. 
+        // if (input.checked) input.checked = false;
+        input.value = problems[index].possibleAnswers[i];
+      });
       labels.forEach(
         (label, i) => (label.textContent = problems[index].possibleAnswers[i]),
       );
     });
     eventEmitter.emitEvent("setUpFinished");
-    console.log(problemSections);
   };
 
-  return { problemSections, setUpQuiz, areAllButtonsClicked, getUnfinishedProblems };
+  return { problemSections, setUpQuiz, areAllButtonsClicked, getProblems };
 })();
 
 export default problemSections;

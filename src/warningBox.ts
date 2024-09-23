@@ -1,6 +1,7 @@
 export type ProblemData = {
   question: number;
   isFinished: boolean;
+  chosenAnswer?:string
 };
 
 const warningBox = (() => {

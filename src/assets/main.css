@@ -107,6 +107,14 @@ body {
               }
               .result {
                 font-size: 40px;
+
+                &.correct::after{
+                  content: '\2713';
+                }
+
+                &.wrong::after{
+                  content:'\2718';
+                }
               }
               .correctAnswer {
                 width: 50%;
