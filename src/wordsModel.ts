@@ -74,12 +74,14 @@ function createProblems(
   console.log(words[0]);
 
   //TODO Create function that randomizes the possible answers
-  const possibleAnswers: string[] = [
+  let possibleAnswers: string[] = [
     words[0][0].shortdef[0],
     words[1][0].shortdef[0],
     words[2][0].shortdef[0],
     words[3][0].shortdef[0],
   ];
+
+  possibleAnswers = randomizePossibleAnswers(possibleAnswers)
 
   const problems: Problem[] = words.map((word, index) => {
     return {
@@ -155,25 +157,27 @@ async function fetchWords() {
   let promises: Promise<WordDataArray>[] = [];
 
   //! DO NOT DELETE. Commented out to use mock promises array
-  // promises = words.map(async (word, index) => {
-  //   const promise = await fetch(
-  //     `https://www.dictionaryapi.com/api/v3/references/sd2/json/${word}?key=${apiKey}`,
-  //   );
-  //   const data:WordDataArray = await promise.json();
+  promises = words.map(async (word, index) => {
+    const promise = await fetch(
+      `https://www.dictionaryapi.com/api/v3/references/sd2/json/${word}?key=${apiKey}`,
+    );
+    const data:WordDataArray = await promise.json();
 
-  //   return data;
+    return data;
 
-  // });
-
-  promises = mockWordDataArrayList.map(async (w: WordDataArray) => {
-    return w;
   });
+
+  // promises = mockWordDataArrayList.map(async (w: WordDataArray) => {
+  //   return w;
+  // });
 
   Promise.all(promises).then((wordDataArrayList: WordDataArray[]) => {
     const problems = createProblems(wordDataArrayList, words);
     setProblems(problems);
     eventEmitter.emitEvent("problemsCreated", problems);
   });
+
+  eventEmitter.emitEvent("fetchingWords")
 }
 
 const model = {

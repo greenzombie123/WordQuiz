@@ -20,8 +20,11 @@ const resultSection = (() => {
   const setUp = (problems: Problem[]) => {
     problems.forEach((problem, index) => {
       wordCells[index].textContent = problem.word;
-      resultCells[index].classList.add(getResult(problem.isUserCorrect))
+      resultCells[index].classList.remove("wrong");
+      resultCells[index].classList.remove("correct");
+      resultCells[index].classList.add(getResult(problem.isUserCorrect));
       answerCells[index].textContent = getAnswers(problem);
+      console.log(1);
     });
 
     setScore(problems);

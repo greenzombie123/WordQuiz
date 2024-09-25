@@ -53,7 +53,7 @@ const problemSections = (() => {
       heading.textContent = problems[index].word;
       inputs.forEach((input, i) => {
         //TODO Accidentally removes checked from html. 
-        // if (input.checked) input.checked = false;
+        if (input.checked) input.checked = false;
         input.value = problems[index].possibleAnswers[i];
       });
       labels.forEach(

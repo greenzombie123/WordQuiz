@@ -7,6 +7,7 @@ import eventEmitter from "./eventEmitter";
 import arrowButtons from "./arrowButtons";
 import warningBox from "./warningBox";
 import resultSection from "./resultSection";
+import * as loadingBox from "./loadingBox";
 
 const controller = (() => {
   const handleButtonClick = () => {
@@ -16,10 +17,9 @@ const controller = (() => {
     } else if (currentSlide === 5) {
       model.resetProblems();
       model.randomizeProblems();
-      const newProblems = model.getProblems()
-      console.log(newProblems)
-      problemSections.setUpQuiz(newProblems)
-      sections.moveBackToFirstSlide()
+      const newProblems = model.getProblems();
+      problemSections.setUpQuiz(newProblems);
+      sections.moveBackToFirstSlide();
       arrowButtons.changeToNextButton();
       arrowButtons.revealNextButton();
       mainButton.hideButton();
@@ -27,9 +27,9 @@ const controller = (() => {
   };
 
   const handleSetUpFinished = () => {
+    loadingBox.hide()
     sections.moveToFirstSlide();
     arrowButtons.revealNextButton();
-    mainButton.hideButton();
   };
 
   const handleNextButtonClick = () => {
@@ -70,10 +70,15 @@ const controller = (() => {
     }
   };
 
+  const handleFetchingWords = () => {
+    mainButton.hideButton();
+    loadingBox.reveal();
+  };
+
   const init = () => {
-    //? Can technically pass the handler to fetch
     eventEmitter.subscribe("problemsCreated", problemSections.setUpQuiz);
     eventEmitter.subscribe("setUpFinished", handleSetUpFinished);
+    eventEmitter.subscribe("fetchingWords", handleFetchingWords);
 
     eventListenerManager.setListener(handleButtonClick, mainButton.button);
     eventListenerManager.setListener(
